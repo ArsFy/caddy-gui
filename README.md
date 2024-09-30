@@ -4,6 +4,10 @@
 ![](https://img.shields.io/badge/Fyne-v2-blue)
 ![](https://img.shields.io/badge/PRs-welcome-green)
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/09d70ea6-2c53-406f-889f-c6e05a919e99" width="45%"/>
+</p>
+
 Easily configure and start the Caddy server with a user-friendly interface. This tool allows you to quickly set up and manage your Caddy server, making it ideal for creating test servers and managing configurations effortlessly.
 
 ## Start
