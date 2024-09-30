@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"sync"
 
 	"fyne.io/fyne/v2"
@@ -13,6 +14,8 @@ import (
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 )
+
+const maxLogLines = 500
 
 func main() {
 	myApp := app.New()
@@ -103,7 +106,7 @@ func main() {
 		go func() {
 			scanner := bufio.NewScanner(stdout)
 			for scanner.Scan() {
-				outputLabel.SetText(outputLabel.Text + scanner.Text() + "\n")
+				appendLog(outputLabel, scanner.Text())
 				outputScroll.ScrollToBottom()
 			}
 		}()
@@ -111,14 +114,14 @@ func main() {
 		go func() {
 			scanner := bufio.NewScanner(stderr)
 			for scanner.Scan() {
-				outputLabel.SetText(outputLabel.Text + scanner.Text() + "\n")
+				appendLog(outputLabel, scanner.Text())
 				outputScroll.ScrollToBottom()
 			}
 		}()
 
 		go func() {
 			if err := cmd.Wait(); err != nil {
-				outputLabel.SetText(fmt.Sprintf("Command finished with error: %v", err))
+				appendLog(outputLabel, fmt.Sprintf("Command finished with error: %v", err))
 			}
 			mu.Lock()
 			buttonTextChan <- "Run"
@@ -140,4 +143,13 @@ func main() {
 	))
 
 	myWindow.ShowAndRun()
+}
+
+func appendLog(outputLabel *widget.Label, text string) {
+	lines := strings.Split(outputLabel.Text, "\n")
+	if len(lines) >= maxLogLines {
+		lines = lines[len(lines)-maxLogLines+1:]
+	}
+	lines = append(lines, text)
+	outputLabel.SetText(strings.Join(lines, "\n"))
 }

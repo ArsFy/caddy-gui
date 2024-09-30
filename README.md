@@ -21,6 +21,7 @@ mv caddy-[your-platform] caddy
 #### 2. Build
 
 ```bash
+go build -o CaddyGUI main.go
 fyne package -os [your-platform] -icon icon.png
 ```
 
