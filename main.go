@@ -15,7 +15,7 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-const maxLogLines = 500
+const maxLogLines = 50
 
 func main() {
 	myApp := app.New()
